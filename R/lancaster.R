@@ -29,13 +29,13 @@ lancaster <- function(pvalues, weights)
 		warning('Extreme p-values around and below 10e-320 will produce a p-value of 0. Replace extreme p-values with 10e-320 to obtain an upper bound for the aggregated p-value.')
 	}
 	t <- sapply(1:length(pvalues), function(i) lts(pvalues[i], weights[i]))
-	t <- sum(t)
+	t <- sum(t, na.rm = T)
 	p <- pchisq(t, sum(weights), lower.tail=FALSE) 
 	p
 }
 
 lts <- function(pvalue, weight)
 {
-	qgamma(pvalue, shape = weight /2, scale = 2, lower.tail=FALSE)
+	suppressWarnings(qgamma(pvalue, shape = weight /2, scale = 2, lower.tail=FALSE))
 }
 
